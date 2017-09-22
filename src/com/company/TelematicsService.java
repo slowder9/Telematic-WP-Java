@@ -35,6 +35,7 @@ public class TelematicsService {
 
             // read from all json files
             File file = new File(".");
+//            for(int i = 0; i < file.listFiles().length; i++)
             for (File currentFile : file.listFiles()) {
                 if (currentFile.getName().endsWith(".json")) {
                     // get the json from the file
@@ -43,14 +44,40 @@ public class TelematicsService {
                     // convert that json to a VehicleInfo object
                     ObjectMapper om = new ObjectMapper();
                     VehicleInfo vi = om.readValue(fileJson, VehicleInfo.class);
+                    vehicleInfos.add(vi);
 
-
-                    // what do we do with vi?
-                    // put it inside of an arraylist.
                 }
             }
-            // when we get to this point, we should have a populated arraylist of VehicleInfos
 
+                    double odometer = 0;
+                    double consumption = 0;
+                    double oilChange = 0;
+                    double engineSize = 0;
+
+                    for (int i = 0; i < vehicleInfos.size(); i++) {
+                        odometer += vehicleInfos.get(i).getOdometer();
+                        consumption += vehicleInfos.get(i).getConsumption();
+                        oilChange += vehicleInfos.get(i).getLastOilChange();
+                        engineSize+= vehicleInfos.get(i).getEngineSize();
+                    }
+
+            System.out.println("The total Odometer is :" + odometer);
+            System.out.println("The average odometer is :" + (odometer/vehicleInfos.size()));
+
+            System.out.println("The total consumption is :" + consumption);
+            System.out.println("The average consumption is :" + (consumption/vehicleInfos.size()));
+
+            System.out.println("The total lastOilChange is :" + oilChange);
+            System.out.println("The average oil change is :" + (oilChange/vehicleInfos.size()));
+
+            System.out.println("The total engineSizeInL is :" + engineSize);
+            System.out.println("The average engine size is :" + (engineSize/vehicleInfos.size()));
+
+            System.out.println("The average miles per gallon is:" + (consumption/odometer));
+
+            // what do we do with vi?
+            // put it inside of an arraylist.
+            // when we get to this point, we should have a populated arraylist of VehicleInfos
             // we can use this list to write values to our html
 
         } catch (IOException e) {
@@ -62,7 +89,15 @@ public class TelematicsService {
         Scanner fileScanner = new Scanner(f);
 
         String results = "";
+        String stuff = fileScanner.nextLine();
+        results += stuff;
+
+
+        // results to get a new value
+        // results == "vin":12345,"odometer":1.2,"consumption":2.3,"lastOilChange":3.4,"engineSize":4.5
+
         // while fileScanner hasNext(),
+
         // add the next line from the file
         // to results
 
@@ -70,5 +105,4 @@ public class TelematicsService {
     }
 
     // TODO: maybe write a "writeDataToFile method??????"
-
-        }
+}
